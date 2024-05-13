@@ -156,24 +156,8 @@ def get_services(update: Update, context: CallbackContext):
 
 
 def get_repl_logs(update: Update, context: CallbackContext):
-    log_files_dir = '/var/log/postgres/'  
-    result = ''
-
-    try:
-        logger.info(f"Reading log files from directory: {log_files_dir}")
-        for filename in os.listdir(log_files_dir):
-            if filename.endswith('.log'):
-                logger.info(f"Found log file: {filename}")
-                with open(os.path.join(log_files_dir, filename), 'r') as file:
-                    log_data = file.read()
-                    result += '\n' + log_data
-        logger.debug(f"Log reading successful. Result length: {len(result)}")
-        update.message.reply_text(f"Результат выполнения команды просмотра логов бд:\n{result[-1500:]}")
-    except Exception as e:
-        logger.error(f"Error reading log files: {e}")
-        update.message.reply_text("Произошла ошибка при чтении логов бд. Пожалуйста, попробуйте позже.")
-
-    logger.debug(f"Result preview: {result[:1500]}")
+    result = ssh_command('cat /var/log/postgresql/postgresql-14-main.log')[-1500:]
+    update.message.reply_text(f"Результат выполнения команды просмотра логов репликации :\n{result}")
 
 
 
