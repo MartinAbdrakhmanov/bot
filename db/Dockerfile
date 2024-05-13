@@ -1,14 +1,14 @@
 FROM postgres:14-alpine
 
 
-ARG REPL_PASSWORD
-ARG REPL_USER
+ARG DB_REPL_PASSWORD
+ARG DB_REPL_USER
 ARG DB_USER
 ARG DB_PASSWORD
 ARG DB_DATABASE
 
 
-RUN echo "CREATE USER ${REPL_USER} REPLICATION ENCRYPTED PASSWORD '${REPL_PASSWORD}';" > /docker-entrypoint-initdb.d/00_init.sql
+RUN echo "CREATE USER ${DB_REPL_USER} REPLICATION ENCRYPTED PASSWORD '${DB_REPL_PASSWORD}';" > /docker-entrypoint-initdb.d/00_init.sql
 RUN echo "SELECT pg_create_physical_replication_slot('replication_slot');" > /docker-entrypoint-initdb.d/01_init.sql
 RUN echo "ALTER ROLE ${DB_USER} PASSWORD '${DB_PASSWORD}';" > /docker-entrypoint-initdb.d/02_init.sql
 RUN echo "CREATE DATABASE ${DB_DATABASE};" > /docker-entrypoint-initdb.d/03_init.sql
