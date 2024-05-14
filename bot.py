@@ -115,7 +115,7 @@ def get_w(update: Update, context: CallbackContext):
 
 def get_auths(update: Update, context: CallbackContext):
     result = ssh_command('last')
-    update.message.reply_text(f"Результат выполнения команды просмотра последних входов:\n{result}")
+    update.message.reply_text(f"Результат выполнения команды просмотра последних входов:\n{result[-500:]}")
 
 def get_critical(update: Update, context: CallbackContext):
     result = ssh_command('journalctl -p 0..2')
